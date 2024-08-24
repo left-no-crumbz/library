@@ -15,10 +15,8 @@ const bookContainer = document.getElementById("books-container");
 
 
 
-Book.prototype.toggleRead = () => {
-    //  add toggle read functionality
-    // this.hasRead = !hasRead;
-    // this.hasRead = !this.hasRead;
+Book.prototype.toggleRead = function () {
+    this.hasRead = !this.hasRead;
 }
 
 function Book(title, author, pages, hasRead) {
@@ -26,7 +24,6 @@ function Book(title, author, pages, hasRead) {
     this.author = author;
     this.pages = pages;
     this.hasRead = !!(hasRead === "on");
-    console.log(`Book when initiated: ${hasRead}`);
 }
 
 
@@ -64,7 +61,6 @@ function removeBookToLibrary(element){
 function displayBooks() {
     const bookGenerator = generateBooks();
 
-    // TODO: Add toggle read button
     const card = document.createElement("div");
     const bookTitle = document.createElement("h1");
     const bookAuthor = document.createElement("p");
@@ -95,11 +91,8 @@ function displayBooks() {
 
         
         readToggle.addEventListener("mousedown", (event) => {
-            // console.log(book.value);
-            // book.value.toggleRead();
-            // console.log(book.value);
-
-            // readToggle.textContent = (book.value.hasRead) ? "Read" : "Not Read"; 
+            book.value.toggleRead();
+            readToggle.textContent = (book.value.hasRead) ? "Read" : "Not Read"; 
         })
     }
 
@@ -114,11 +107,7 @@ addBookBtn.addEventListener("mousedown", (event) => {
     const bookTitle = title.value;
     const bookAuthor = author.value;
     const bookPages = pages.value;
-    
     const bookReadStatus = (readStatus.checked === true) ? "on" : "off";
-
-    console.log(`Book when added: ${bookReadStatus}`);
-
     const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus)
     addBookToLibrary(book);    
 })
