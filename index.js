@@ -23,7 +23,7 @@ function Book(title, author, pages, hasRead) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.hasRead = !!(hasRead.value === "on");
+    this.hasRead = !!(hasRead === "on");
 }
 
 
@@ -53,7 +53,6 @@ function* generateBooks(){
 function removeBookToLibrary(element){
     const card = element;
     const index = card.getAttribute("data-index");
-    console.log(index);
     if(index > -1){
         myLibrary.splice(index, 1);
         bookContainer.removeChild(element);
@@ -63,14 +62,16 @@ function removeBookToLibrary(element){
 function displayBooks() {
     const bookGenerator = generateBooks();
 
-    // TODO: Add remove button
     // TODO: Add toggle read button
     const card = document.createElement("div");
     const bookTitle = document.createElement("h1");
     const bookAuthor = document.createElement("p");
     const bookPages = document.createElement("p");
-    const removeBtn = document.createElement("button"); 
+    const removeBtn = document.createElement("button");
     removeBtn.textContent = "Remove";
+
+    const readToggle = document.createElement("div");
+    
 
     for (let index = 0; index < myLibrary.length; index++) {
         const book = bookGenerator.next();
@@ -78,6 +79,8 @@ function displayBooks() {
         bookTitle.textContent = book.value.title;
         bookAuthor.textContent = book.value.author;
         bookPages.textContent = book.value.pages;
+        readToggle.textContent = (book.value.hasRead) ? "Read" : "Not Read"; 
+
         card.classList.add("card");
         card.setAttribute("data-index", `${index}`)
 
@@ -86,6 +89,7 @@ function displayBooks() {
         card.appendChild(bookAuthor);
         card.appendChild(bookPages);
         card.appendChild(removeBtn);
+        card.appendChild(readToggle);
     }
 
     removeBtn.addEventListener("mousedown", (event) => {
@@ -99,7 +103,6 @@ addBookBtn.addEventListener("mousedown", (event) => {
     const bookAuthor = author.value;
     const bookPages = pages.value;
     const bookReadStatus = readStatus.value;
-
     const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus)
     addBookToLibrary(book);    
 })
