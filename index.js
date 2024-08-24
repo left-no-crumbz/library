@@ -17,6 +17,8 @@ const bookContainer = document.getElementById("books-container");
 
 Book.prototype.toggleRead = () => {
     //  add toggle read functionality
+    // this.hasRead = !hasRead;
+    // this.hasRead = !this.hasRead;
 }
 
 function Book(title, author, pages, hasRead) {
@@ -24,6 +26,7 @@ function Book(title, author, pages, hasRead) {
     this.author = author;
     this.pages = pages;
     this.hasRead = !!(hasRead === "on");
+    console.log(`Book when initiated: ${hasRead}`);
 }
 
 
@@ -34,7 +37,6 @@ form.addEventListener("submit", (event) => {
     author.value = "";
     pages.value = "";
     readStatus.checked = false;
-    console.log(myLibrary);
     displayBooks();
 })
 
@@ -71,7 +73,6 @@ function displayBooks() {
     removeBtn.textContent = "Remove";
 
     const readToggle = document.createElement("div");
-    
 
     for (let index = 0; index < myLibrary.length; index++) {
         const book = bookGenerator.next();
@@ -79,7 +80,8 @@ function displayBooks() {
         bookTitle.textContent = book.value.title;
         bookAuthor.textContent = book.value.author;
         bookPages.textContent = book.value.pages;
-        readToggle.textContent = (book.value.hasRead) ? "Read" : "Not Read"; 
+        console.log(book.value.hasRead);
+        readToggle.textContent = (book.value.hasRead === true) ? "Read" : "Not Read"; 
 
         card.classList.add("card");
         card.setAttribute("data-index", `${index}`)
@@ -90,11 +92,21 @@ function displayBooks() {
         card.appendChild(bookPages);
         card.appendChild(removeBtn);
         card.appendChild(readToggle);
+
+        
+        readToggle.addEventListener("mousedown", (event) => {
+            // console.log(book.value);
+            // book.value.toggleRead();
+            // console.log(book.value);
+
+            // readToggle.textContent = (book.value.hasRead) ? "Read" : "Not Read"; 
+        })
     }
 
     removeBtn.addEventListener("mousedown", (event) => {
         removeBookToLibrary(card);
     });
+
 }
 
 
@@ -102,7 +114,11 @@ addBookBtn.addEventListener("mousedown", (event) => {
     const bookTitle = title.value;
     const bookAuthor = author.value;
     const bookPages = pages.value;
-    const bookReadStatus = readStatus.value;
+    
+    const bookReadStatus = (readStatus.checked === true) ? "on" : "off";
+
+    console.log(`Book when added: ${bookReadStatus}`);
+
     const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus)
     addBookToLibrary(book);    
 })
