@@ -9,8 +9,10 @@
     <link rel="icon" href="./book.svg">
 </head>
 <body>
-    <h1>Library</h1>
-    <button id="open-modal">Add book</button>
+    <div class="appBar flex">
+        <h1>Library</h1>
+        <button id="open-modal">Add book</button>
+    </div>
     <dialog id="modal">
         <form action="" id="book-form">
             <input id="title" type="text" placeholder="Title">
@@ -22,7 +24,7 @@
         </form>
     </dialog>
 
-    <div id="books-container">
+    <div id="books-container" class="grid">
         <!-- dynamically create cards -->
     </div>
 </body>

@@ -65,6 +65,8 @@ function displayBooks() {
     const bookTitle = document.createElement("h1");
     const bookAuthor = document.createElement("p");
     const bookPages = document.createElement("p");
+    const btnContainer = document.createElement("div");
+
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "Remove";
 
@@ -80,14 +82,18 @@ function displayBooks() {
         readToggle.textContent = (book.value.hasRead === true) ? "Read" : "Not Read"; 
 
         card.classList.add("card");
+        btnContainer.classList.add("flex");
+        btnContainer.classList.add("btn-container");
+
         card.setAttribute("data-index", `${index}`)
 
         bookContainer.appendChild(card);
         card.appendChild(bookTitle);
         card.appendChild(bookAuthor);
         card.appendChild(bookPages);
-        card.appendChild(removeBtn);
-        card.appendChild(readToggle);
+        card.appendChild(btnContainer);
+        btnContainer.appendChild(removeBtn);
+        btnContainer.appendChild(readToggle);
 
         
         readToggle.addEventListener("mousedown", (event) => {
