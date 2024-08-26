@@ -58,6 +58,14 @@ function removeBookToLibrary(element){
     }
 }
 
+function changeReadColor(book, readToggle) {
+    if (book.hasRead){
+        readToggle.style.backgroundColor = "#35A552";
+    } else {
+        readToggle.style.backgroundColor = "#EA3E2F";
+    }
+}
+
 function displayBooks() {
     const bookGenerator = generateBooks();
     const card = document.createElement("div");
@@ -84,12 +92,8 @@ function displayBooks() {
         bookAuthor.textContent = book.value.author;
         bookPages.textContent = book.value.pages;
         readToggle.textContent = book.value.hasRead ? "Read" : "Not Read";
-        
-        if (book.value.hasRead){
-            readToggle.style.backgroundColor = "lightgreen";
-        } else {
-            readToggle.style.backgroundColor = "rgb(255, 142, 142)";
-        }
+
+        changeReadColor(book.value, readToggle);
 
         console.log(readToggle.classList);
         card.setAttribute("data-index", `${index}`)
@@ -104,7 +108,6 @@ function displayBooks() {
 
     }
 
-
     card.addEventListener("mousedown", (event) => {
         const target = event.target
         const className = target.className;
@@ -116,11 +119,9 @@ function displayBooks() {
         if(className.includes("read-toggle")){
             book.toggleRead();
             readToggle.textContent = book.hasRead ? "Read" : "Not Read";
-            if (book.hasRead){
-                readToggle.style.backgroundColor = "lightgreen";
-            } else {
-                readToggle.style.backgroundColor = "rgb(255, 142, 142)";
-            }
+
+            changeReadColor(book, readToggle);
+
         } else if (className.includes("remove-btn")){
             removeBookToLibrary(card);
         }
@@ -131,7 +132,7 @@ addBookBtn.addEventListener("mousedown", (event) => {
     const bookTitle = title.value;
     const bookAuthor = author.value;
     const bookPages = pages.value;
-    const bookReadStatus = (readStatus.checked === true) ? "on" : "off";
+    const bookReadStatus = readStatus.checked ? "on" : "off";
     const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus)
     addBookToLibrary(book);    
 })

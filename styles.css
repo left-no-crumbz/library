@@ -64,6 +64,20 @@ p, h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     padding-inline: 1em;
     padding-block: .5em;
+    color: white;
+    user-select: none;
+}
+
+#open-modal,
+#add-book-btn {
+    background-color: #3879F6;
+
+}
+
+.remove-btn {
+    background-color: white;
+    color: #EA3E2F;
+    border: 1px solid #EA3E2F;
 }
 
 #modal {
@@ -118,7 +132,7 @@ p, h1, h2, h3, h4, h5, h6 {
 .card {
     align-items: center;
     grid-auto-flow: row;
-    grid-template-rows: 1fr repeat(3, 35px);
+    grid-template-rows: 1fr repeat(2, 35px) 50px;
     border-radius: .50rem;
     padding: 1rem;
     min-height: 180px;
