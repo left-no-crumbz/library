@@ -13,18 +13,21 @@
         <h1>Library</h1>
         <button id="open-modal">Add book</button>
     </div>
-    <dialog id="modal">
-        <form action="" id="book-form">
-            <input id="title" type="text" placeholder="Title">
-            <input id="author" type="text" placeholder="Author">
-            <input id="pages" type="number" placeholder="Number of Pages">
-            <label for="readStatus">Have you read it?</label>
-            <input type="checkbox" id="readStatus">
-            <button id="add-book-btn" type="submit">Add Book</button>
-        </form>
-    </dialog>
-
     <div id="books-container" class="grid">
+        <dialog id="modal">
+            <form action="" id="book-form" class="flex">
+                <input id="title" type="text" placeholder="Title" required>
+                <input id="author" type="text" placeholder="Author" required>
+                <input id="pages" type="number" placeholder="Number of Pages" required>
+                
+                <div class="read-status-container flex">
+                    <label for="readStatus">Have you read it?</label>
+                    <input type="checkbox" id="readStatus">
+                </div>
+    
+                <button id="add-book-btn" type="submit">Add Book</button>
+            </form>
+        </dialog>
         <!-- dynamically create cards -->
     </div>
 </body>
