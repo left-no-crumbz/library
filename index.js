@@ -23,51 +23,31 @@ function Book(title, author, pages, hasRead) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.hasRead = !!(hasRead === "on");
+    this.hasRead = !!hasRead;
 }
 
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
     modal.close();
+    const bookTitle = title.value;
+    const bookAuthor = author.value;
+    const bookPages = pages.value;
+    const bookReadStatus = readStatus.checked;
+    const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus);
+    addBookToLibrary(book);
+    displayBook(book, myLibrary.length - 1);
     title.value = "";
     author.value = "";
     pages.value = "";
     readStatus.checked = false;
-    displayBooks();
-})
+});
 
-function addBookToLibrary(book){
+function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-
-function* generateBooks(){
-    let index = 0;
-    while (true) {
-        yield myLibrary[index++];
-    }
-}
-
-function removeBookToLibrary(element){
-    const card = element;
-    const index = card.getAttribute("data-index");
-    if(index > -1){
-        myLibrary.splice(index, 1);
-        bookContainer.removeChild(element);
-    }
-}
-
-function changeReadColor(book, readToggle) {
-    if (book.hasRead){
-        readToggle.style.backgroundColor = "#35A552";
-    } else {
-        readToggle.style.backgroundColor = "#EA3E2F";
-    }
-}
-
-function displayBooks() {
-    const bookGenerator = generateBooks();
+function displayBook(book, index) {
     const card = document.createElement("div");
     const bookTitle = document.createElement("h1");
     const bookAuthor = document.createElement("p");
@@ -78,64 +58,63 @@ function displayBooks() {
     removeBtn.textContent = "Remove";
 
     const readToggle = document.createElement("div");
-    card.classList.add("card");
-    card.classList.add("grid");
+    card.classList.add("card", "grid");
     removeBtn.classList.add("remove-btn");
     readToggle.classList.add("read-toggle");
-    btnContainer.classList.add("flex");
-    btnContainer.classList.add("btn-container");
+    btnContainer.classList.add("flex", "btn-container");
 
-    for (let index = 0; index < myLibrary.length; index++) {
-        const book = bookGenerator.next();
+    bookTitle.textContent = book.title;
+    bookAuthor.textContent = book.author;
+    bookPages.textContent = book.pages;
+    readToggle.textContent = book.hasRead ? "Read" : "Not Read";
 
-        bookTitle.textContent = book.value.title;
-        bookAuthor.textContent = book.value.author;
-        bookPages.textContent = book.value.pages;
-        readToggle.textContent = book.value.hasRead ? "Read" : "Not Read";
+    console.log(book.hasRead);
 
-        changeReadColor(book.value, readToggle);
+    changeReadColor(book, readToggle);
 
-        console.log(readToggle.classList);
-        card.setAttribute("data-index", `${index}`)
+    card.setAttribute("data-index", `${index}`);
 
-        bookContainer.appendChild(card);
-        card.appendChild(bookTitle);
-        card.appendChild(bookAuthor);
-        card.appendChild(bookPages);
-        card.appendChild(btnContainer);
-        btnContainer.appendChild(removeBtn);
-        btnContainer.appendChild(readToggle);
-
-    }
+    bookContainer.appendChild(card);
+    card.appendChild(bookTitle);
+    card.appendChild(bookAuthor);
+    card.appendChild(bookPages);
+    card.appendChild(btnContainer);
+    btnContainer.appendChild(removeBtn);
+    btnContainer.appendChild(readToggle);
 
     card.addEventListener("mousedown", (event) => {
-        const target = event.target
+        const target = event.target;
         const className = target.className;
         const index = card.getAttribute("data-index");
 
         const book = myLibrary[index];
 
-
-        if(className.includes("read-toggle")){
+        if (className.includes("read-toggle")) {
             book.toggleRead();
             readToggle.textContent = book.hasRead ? "Read" : "Not Read";
-
             changeReadColor(book, readToggle);
-
-        } else if (className.includes("remove-btn")){
-            removeBookToLibrary(card);
+        } else if (className.includes("remove-btn")) {
+            removeBookFromLibrary(card);
         }
     });
 }
 
-addBookBtn.addEventListener("mousedown", (event) => {
-    const bookTitle = title.value;
-    const bookAuthor = author.value;
-    const bookPages = pages.value;
-    const bookReadStatus = readStatus.checked ? "on" : "off";
-    const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus)
-    addBookToLibrary(book);    
-})
+function removeBookFromLibrary(element) {
+    const card = element;
+    const index = card.getAttribute("data-index");
+    if (index > -1) {
+        myLibrary.splice(index, 1);
+        bookContainer.removeChild(element);
+    }
+}
+
+function changeReadColor(book, readToggle) {
+    if (book.hasRead) {
+        readToggle.style.backgroundColor = "#35A552";
+    } else {
+        readToggle.style.backgroundColor = "#EA3E2F";
+    }
+}
 
 
 openModal.addEventListener("mousedown", () => {
