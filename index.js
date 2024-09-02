@@ -1,9 +1,13 @@
 // TODO:
-//  use module pattern
+// use module pattern
 // use private variables
-// clean up code
 
-const myLibrary = [];
+const myLibrary = (() => {
+    const myLibrary = [];
+    const push = (item) => myLibrary.push(item);
+    return {push};
+})();
+
 
 const openModal = document.getElementById("open-modal");
 const modal = document.getElementById("modal");
