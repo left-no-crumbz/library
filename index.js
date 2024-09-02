@@ -1,11 +1,10 @@
-// TODO:
-// use module pattern
-// use private variables
-
 const myLibrary = (() => {
     const myLibrary = [];
     const push = (item) => myLibrary.push(item);
-    return {push};
+    const length = () => myLibrary.length;
+    const getElement = (index) => myLibrary[index];
+    const splice = (idxToRemove, numToRemove) => myLibrary.splice(idxToRemove, numToRemove);
+    return {push, length, getElement, splice};
 })();
 
 
@@ -40,7 +39,7 @@ form.addEventListener("submit", (event) => {
     const bookReadStatus = readStatus.checked;
     const book = new Book(bookTitle, bookAuthor, bookPages, bookReadStatus);
     addBookToLibrary(book);
-    displayBook(book, myLibrary.length - 1);
+    displayBook(book, myLibrary.length() - 1);
     title.value = "";
     author.value = "";
     pages.value = "";
@@ -76,6 +75,7 @@ function displayBook(book, index) {
 
     changeReadColor(book, readToggle);
 
+    
     card.setAttribute("data-index", `${index}`);
 
     bookContainer.appendChild(card);
@@ -85,23 +85,28 @@ function displayBook(book, index) {
     card.appendChild(btnContainer);
     btnContainer.appendChild(removeBtn);
     btnContainer.appendChild(readToggle);
-
-    card.addEventListener("mousedown", (event) => {
-        const target = event.target;
-        const className = target.className;
-        const index = card.getAttribute("data-index");
-
-        const book = myLibrary[index];
-
-        if (className.includes("read-toggle")) {
-            book.toggleRead();
-            readToggle.textContent = book.hasRead ? "Read" : "Not Read";
-            changeReadColor(book, readToggle);
-        } else if (className.includes("remove-btn")) {
-            removeBookFromLibrary(card);
-        }
-    });
 }
+
+bookContainer.addEventListener("mousedown", (event) => {
+    const target = event.target;
+    const className = target.className;
+  
+    const card = target.closest(".card");
+  
+    if (card) {
+      const index = card.getAttribute("data-index");
+      const book = myLibrary.getElement(index);
+      const readToggle = card.querySelector(".read-toggle");
+  
+      if (className.includes("read-toggle")) {
+        book.toggleRead();
+        readToggle.textContent = book.hasRead ? "Read" : "Not Read";
+        changeReadColor(book, readToggle);
+      } else if (className.includes("remove-btn")) {
+        removeBookFromLibrary(card);
+      }
+    }
+  });
 
 function removeBookFromLibrary(element) {
     const card = element;
