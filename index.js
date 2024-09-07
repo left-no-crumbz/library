@@ -56,6 +56,7 @@ function displayBook(book, index) {
     const bookAuthor = document.createElement("p");
     const bookPages = document.createElement("p");
     const btnContainer = document.createElement("div");
+    const authorPageContainer = document.createElement("div");
 
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "Remove";
@@ -65,10 +66,15 @@ function displayBook(book, index) {
     removeBtn.classList.add("remove-btn");
     readToggle.classList.add("read-toggle");
     btnContainer.classList.add("flex", "btn-container");
+    authorPageContainer.classList.add("flex", "author-page-container");
 
     bookTitle.textContent = book.title;
-    bookAuthor.textContent = book.author;
-    bookPages.textContent = book.pages;
+
+
+    bookAuthor.textContent = `by ${book.author}`;
+    bookPages.textContent = `Pages: ${book.pages}`;
+
+
     readToggle.textContent = book.hasRead ? "Read" : "Not Read";
 
     console.log(book.hasRead);
@@ -80,8 +86,10 @@ function displayBook(book, index) {
 
     bookContainer.appendChild(card);
     card.appendChild(bookTitle);
-    card.appendChild(bookAuthor);
-    card.appendChild(bookPages);
+
+    card.appendChild(authorPageContainer);
+    authorPageContainer.appendChild(bookAuthor);
+    authorPageContainer.appendChild(bookPages);
     card.appendChild(btnContainer);
     btnContainer.appendChild(removeBtn);
     btnContainer.appendChild(readToggle);
@@ -128,7 +136,7 @@ function changeReadColor(book, readToggle) {
 
 openModal.addEventListener("mousedown", () => {
     modal.showModal();
-})
+});
 
 
 
@@ -136,5 +144,4 @@ window.addEventListener("mousedown", (event) => {
     if (event.target === modal) {
         modal.close();
     }
-
-})
+});
